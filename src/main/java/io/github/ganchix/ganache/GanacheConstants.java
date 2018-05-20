@@ -1,4 +1,4 @@
-package io.github.ganchix.arangodb;
+package io.github.ganchix.ganache;
 
 public class GanacheConstants {
 
