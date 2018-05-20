@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  */
 public class LogGanacheExtractorConsumer implements Consumer<OutputFrame> {
     private static final Pattern ANSI_CODE_PATTERN = Pattern.compile("\\[\\d[ABCD]");
-    private static final Pattern IS_ADDRESS_OR_PRIVATE_KEY = Pattern.compile("\\((\\d{1,})\\).*");
+    private static final Pattern IS_ADDRESS_OR_PRIVATE_KEY = Pattern.compile("^\\((\\d{1,})\\).*");
     private final Logger logger;
     private String prefix = "";
     private GanacheContainer ganacheContainer;

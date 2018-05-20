@@ -33,16 +33,17 @@ public class GanacheContainer<SELF extends GanacheContainer<SELF>> extends Gener
         super(IMAGE + ":" + version);
     }
 
-    public void addAccountAddress(Integer position, String address){
+    public void addAccountAddress(Integer position, String address) {
         accounts.add(position, Account.builder().address(address).build());
     }
-    public void addAccountPrivateKey(Integer position, String privateKey){
+
+    public void addAccountPrivateKey(Integer position, String privateKey) {
         Account account = accounts.get(position);
         account.setPrivateKey(privateKey);
         account.setCredential(Credentials.create(privateKey, account.getAddress()));
     }
 
-    public List<Account> getAccounts(){
+    public List<Account> getAccounts() {
         return this.accounts;
     }
 
@@ -106,6 +107,16 @@ public class GanacheContainer<SELF extends GanacheContainer<SELF>> extends Gener
         options.add(option);
         return self();
     }
+
+    public SELF withFork(String location) {
+        if (!location.startsWith("http")) {
+            throw new RuntimeException("Location must start with http");
+        }
+        String option = "--fork ".concat(location);
+        options.add(option);
+        return self();
+    }
+
 
     public SELF withPort(Integer port) {
         this.port = port;
