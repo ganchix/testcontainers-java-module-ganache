@@ -42,7 +42,7 @@ public class SomeTest {
 
 
 	@Rule
-	public GanacheContainer GanacheContainer = new GanacheContainer().withoutAuthentication();
+	public GanacheContainer GanacheContainer = new GanacheContainer();
 
     
 	@Test
