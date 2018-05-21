@@ -58,7 +58,7 @@ public class SomeTest {
 ```
 
 ### Considerations
-To obtain the data of addresses and privates keys of console log we implemented a custom log consumer [LogGanacheExtractorConsumer] (src/main/java/io/github/ganchix/ganache/LogGanacheExtractorConsumer.java), 
+To obtain the data of addresses and privates keys of console log we implemented a custom log consumer [LogGanacheExtractorConsumer](src/main/java/io/github/ganchix/ganache/LogGanacheExtractorConsumer.java), 
 if you overwrite it this information will not be extracted.
  
 
