@@ -6,6 +6,7 @@ Testcontainers module for [Ganache](http://truffleframework.com/ganache/).
  
 - [Overview](#overview)
 - [Getting started](#getting-started)
+- [Considerations](#considerations)
 - [License](#license)
 
 
@@ -19,6 +20,8 @@ See [testcontainers.org](https://www.testcontainers.org) for more information ab
 
 #### Add dependency
 
+##### Maven
+
 ```
 <dependency>
     <groupId>io.github.ganchix</groupId>
@@ -27,7 +30,7 @@ See [testcontainers.org](https://www.testcontainers.org) for more information ab
 </dependency>
 ```
 
-### Gradle
+##### Gradle
 
 ```
 compile group: 'io.github.ganchix', name: 'testcontainers-java-module-ganache', version: '0.0.1'
@@ -47,13 +50,17 @@ public class SomeTest {
     
 	@Test
 	public void simpleTestWithClientCreation() {
-        Web3j web3j = ganacheContainer.getWeb3j();
-        assertEquals( web3j.ethBlockNumber().send().getBlockNumber(), BigInteger.ZERO);
-        assertNotNull(ganacheContainer);
+            Web3j web3j = ganacheContainer.getWeb3j();
+            assertEquals( web3j.ethBlockNumber().send().getBlockNumber(), BigInteger.ZERO);
+            assertNotNull(ganacheContainer);
 	}
 }
 ```
 
+### Considerations
+To obtain the data of addresses and privates keys of console log we implemented a custom log consumer [LogGanacheExtractorConsumer](src/main/java/io/github/ganchix/ganache/LogGanacheExtractorConsumer.java), 
+if you overwrite it this information will not be extracted.
+ 
 
 ### License
 

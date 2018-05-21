@@ -18,7 +18,7 @@ public class GanacheContainerTest {
 
 
     @Rule
-    public GanacheContainer ganacheContainer = new GanacheContainer().debug().withPort(1485)
+    public GanacheContainer ganacheContainer = new GanacheContainer().withDebug().withPort(1485)
             .withNumberAccounts(2)
             .withDefaultBalanceEther(new BigInteger(String.valueOf(1258)))
             .withNetworkId(10L);

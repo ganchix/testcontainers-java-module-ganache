@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.web3j.crypto.Credentials;
 
-import java.math.BigInteger;
-
 /**
  * Created by Rafael Ríos on 20/05/18.
  */
@@ -15,8 +13,9 @@ import java.math.BigInteger;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Account {
+public class AccountInfo {
 
+    String address;
     String privateKey;
-    BigInteger balance;
+    Credentials credential;
 }
