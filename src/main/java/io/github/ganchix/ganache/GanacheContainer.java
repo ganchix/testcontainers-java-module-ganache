@@ -21,8 +21,7 @@ public class GanacheContainer<SELF extends GanacheContainer<SELF>> extends Gener
 	private List<String> options = new ArrayList<>();
 	private Web3j web3j;
 	private Integer port = 8545;
-
-	private List<AccountInfo> accountInfos = new ArrayList<>();
+	private List<Credentials> credentials = new ArrayList<>();
 
 	public GanacheContainer() {
 		this(LATEST_VERSION);
@@ -32,19 +31,6 @@ public class GanacheContainer<SELF extends GanacheContainer<SELF>> extends Gener
 		super(IMAGE + ":" + version);
 	}
 
-	public void addAccountAddress(Integer position, String address) {
-		accountInfos.add(position, AccountInfo.builder().address(address).build());
-	}
-
-	public void addAccountPrivateKey(Integer position, String privateKey) {
-		AccountInfo accountInfo = accountInfos.get(position);
-		accountInfo.setPrivateKey(privateKey);
-		accountInfo.setCredential(Credentials.create(privateKey, accountInfo.getAddress()));
-	}
-
-	public List<AccountInfo> getAccountInfos() {
-		return this.accountInfos;
-	}
 
 	@Override
 	protected void configure() {
@@ -55,8 +41,16 @@ public class GanacheContainer<SELF extends GanacheContainer<SELF>> extends Gener
 		}
 	}
 
+	void addAccountPrivateKey(Integer position, String privateKey) {
+		credentials.add(position, Credentials.create(privateKey));
+	}
+
+	public List<Credentials> getCredentials() {
+		return this.credentials;
+	}
+
 	public SELF withNumberAccounts(Integer accounts) {
-		String option = "--accountInfos ".concat(accounts.toString());
+		String option = "--accounts ".concat(accounts.toString());
 		options.add(option);
 		return self();
 	}
@@ -116,7 +110,6 @@ public class GanacheContainer<SELF extends GanacheContainer<SELF>> extends Gener
 		return self();
 	}
 
-	//TODO
 	public SELF withMnemonic(List<String> words) {
 		if (words == null || words.isEmpty()) {
 			throw new RuntimeException("Mnemonic needs a list of words");
@@ -126,18 +119,19 @@ public class GanacheContainer<SELF extends GanacheContainer<SELF>> extends Gener
 		return self();
 	}
 
-	//TODO
 	public SELF withSeed() {
 		options.add("--seed");
 		return self();
 	}
+
+
 
 	public SELF withAccounts(List<Account> accounts) {
 		if (accounts == null || accounts.isEmpty()) {
 			throw new RuntimeException("Accounts can't be empty");
 		}
 		List<String> listOfAccounts = accounts.stream()
-				.map(account -> "--account=\"" + account.getPrivateKey() + "," + account.getBalance() + "\"")
+				.map(account -> "--account=" + generatePrivateKey(account.getPrivateKey()) + "," + account.getBalance() )
 				.collect(Collectors.toList());
 
 		options.addAll(listOfAccounts);
@@ -149,7 +143,7 @@ public class GanacheContainer<SELF extends GanacheContainer<SELF>> extends Gener
 			throw new RuntimeException("Addresses can't be empty");
 		}
 		List<String> listOfAccounts = addresses.stream()
-				.map(address -> "--unlock=\"" + address + "\"")
+				.map(address -> "--unlock=" + address )
 				.collect(Collectors.toList());
 
 		options.addAll(listOfAccounts);
@@ -161,7 +155,7 @@ public class GanacheContainer<SELF extends GanacheContainer<SELF>> extends Gener
 			throw new RuntimeException("Positions can't be empty");
 		}
 		List<String> listOfAccounts = positions.stream()
-				.map(position -> "--unlock=\"" + position + "\"")
+				.map(position -> "--unlock=" + position )
 				.collect(Collectors.toList());
 
 		options.addAll(listOfAccounts);
@@ -190,6 +184,7 @@ public class GanacheContainer<SELF extends GanacheContainer<SELF>> extends Gener
 			if (web3j == null) {
 				try {
 					web3j = Web3j.build(new HttpService("http://" + getContainerIpAddress() + ":" + getMappedPort(port) + "/"));
+					log.info("Start Web3j with net version: {}", web3j.netVersion().send().getNetVersion());
 				} catch (Exception e) {
 					throw new RuntimeException("Could not get Web3j", e);
 				}
@@ -200,5 +195,8 @@ public class GanacheContainer<SELF extends GanacheContainer<SELF>> extends Gener
 
 	}
 
+	private String generatePrivateKey(String privateKey) {
+		return privateKey.startsWith("0x") ? privateKey : "0x".concat(privateKey);
+	}
 
 }
