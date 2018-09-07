@@ -26,7 +26,7 @@ See [testcontainers.org](https://www.testcontainers.org) for more information ab
 <dependency>
     <groupId>io.github.ganchix</groupId>
     <artifactId>testcontainers-java-module-ganache</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.4</version>
 </dependency>
 ```
 
