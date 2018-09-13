@@ -33,7 +33,7 @@ See [testcontainers.org](https://www.testcontainers.org) for more information ab
 ##### Gradle
 
 ```
-compile group: 'io.github.ganchix', name: 'testcontainers-java-module-ganache', version: '0.0.1'
+compile group: 'io.github.ganchix', name: 'testcontainers-java-module-ganache', version: '0.0.4'
 ```
 
 #### Code example
